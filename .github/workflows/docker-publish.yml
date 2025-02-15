@@ -8,7 +8,7 @@ on:
 env:
   REGISTRY: rg.fr-par.scw.cloud/funcscwcarboneventsfw2rrxka
   IMAGE_NAME: carbon-events-frontend
-  DOCKER_IMAGE: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+  DOCKER_IMAGE: rg.fr-par.scw.cloud/funcscwcarboneventsfw2rrxka/carbon-events-frontend
 
 jobs:
   build-and-push:
