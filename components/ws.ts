@@ -2,8 +2,8 @@ export class WebSocketHandler {
     private ws: WebSocket
     private response: string = ""
 
-    constructor(public onAnswer: (response: string) => void, public onError: (err: string) => void, url: string = "ws://localhost:8000/ws") {
-        this.ws = new WebSocket(url)
+    constructor(public onAnswer: (response: string) => void, public onError: (err: string) => void) {
+        this.ws = new WebSocket(process.env["BACKEND_URL"] || "ws://localhost:8000/ws")
         this.ws.addEventListener("error", (err) => {
             console.log(err)
             this.onError("An error as occured.")

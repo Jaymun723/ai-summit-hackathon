@@ -1,5 +1,4 @@
 import React, { createContext, useContext, useState } from "react"
-import { Metrics } from "./metrics"
 import styled from "styled-components"
 import { categoryMapping } from "./consts"
 
