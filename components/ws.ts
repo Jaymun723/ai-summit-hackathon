@@ -2,10 +2,10 @@ import { BilanItem } from "./history"
 
 const getUrl = () => {
     const defaultUrl = process.env["BACKEND_URL"] || "ws://localhost:8000/ws"
-    let localUrl = localStorage.getItem("BACKEND_URL")
+    let localUrl = global?.localStorage?.getItem("BACKEND_URL") || null
 
     if (localUrl === null) {
-        localStorage.setItem("BACKEND_URL", defaultUrl)
+        global?.localStorage?.setItem("BACKEND_URL", defaultUrl)
         localUrl = defaultUrl
     }
 
@@ -14,7 +14,6 @@ const getUrl = () => {
 
 export class WebSocketHandler {
     private ws: WebSocket
-    private response: string = ""
 
     constructor(public onAnswer: (response: string) => void, public onError: (err: string) => void, public updateBilan: (bilan: BilanItem[]) => void) {
         this.ws = new WebSocket(getUrl())

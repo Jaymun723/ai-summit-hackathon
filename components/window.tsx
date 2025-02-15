@@ -1,8 +1,9 @@
-import { act, useEffect, useMemo, useReducer, useRef, useState } from "react"
+import { act, useContext, useEffect, useMemo, useReducer, useRef, useState } from "react"
 import { Message } from "./message"
 import { Input } from "./input"
 import styled from "styled-components"
 import { WebSocketHandler } from "./ws"
+import { BilanContext, BilanItem } from "./history"
 
 
 const initialMessages: Message[] = [
@@ -41,6 +42,8 @@ const reducer = (state: State, action: { type: string, content: string }): State
 export const Window = () => {
     // const [messages, setMessages] = useState(initialMessages)
 
+    const { changeBilan } = useContext(BilanContext)
+
 
     const [state, dispatch] = useReducer(reducer, { answering: false, error: "", messages: [] })
 
@@ -51,11 +54,13 @@ export const Window = () => {
             lastMessageRef.current.scrollIntoView({ behavior: "smooth", block: "center" });
             lastMessageRef.current.focus();
         }
-    }, [state.messages]);
+    }, [state.messages, changeBilan]);
 
-    const wsHandler = useMemo(() => new WebSocketHandler((answer) => {
-        dispatch({ type: "ai_message", content: answer })
-    }, (err) => dispatch({ type: "error", content: err })), [])
+    const wsHandler = useMemo(() => new WebSocketHandler(
+        (answer) => dispatch({ type: "ai_message", content: answer }),
+        (err) => dispatch({ type: "error", content: err }),
+        (bilan) => changeBilan(bilan)),
+        [changeBilan])
 
     useEffect(() => {
         return () => {
