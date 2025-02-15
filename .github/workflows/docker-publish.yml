@@ -16,7 +16,7 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Log in to Scaleway Container Registry
         run: docker login ${{ env.REGISTRY }} --username nologin --password ${{ secrets.SCW_SECRET_KEY }}
