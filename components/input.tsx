@@ -1,13 +1,18 @@
 import { useState } from "react"
+import styled from "styled-components"
 
 interface InputProps {
     onMessage: (txt: string) => void
 }
 
+const InputWrapper = styled.form`
+    grid-area: input;
+`
+
 export const Input = ({ onMessage }: InputProps) => {
     const [txt, setTxt] = useState("")
 
-    return <form onSubmit={(e) => {
+    return <InputWrapper onSubmit={(e) => {
         e.preventDefault()
 
         onMessage(txt)
@@ -24,5 +29,5 @@ export const Input = ({ onMessage }: InputProps) => {
                 <input type="submit" className="button is-info" value="Send" />
             </div>
         </div>
-    </form>
+    </InputWrapper>
 }

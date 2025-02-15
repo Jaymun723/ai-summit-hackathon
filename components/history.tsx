@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useMemo, useState } from "react"
+import React, { createContext, useContext, useState } from "react"
 import { Metrics } from "./metrics"
 import styled from "styled-components"
 import { categoryMapping } from "./consts"
@@ -32,27 +32,23 @@ export const BilanWrapper = (props: { children: React.ReactNode }) => {
 
 
 const HistoryWrapper = styled.div`
-    margin-top:  25px;
-    max-height: 230px;
     overflow-y: auto;
+    grid-area: history;
 `
 
 const ListIem = styled.p<{ color: string }>`
     color: ${(props) => props.color};
 `
 
-export const Bilan = () => {
+export const History = () => {
     const { items } = useContext(BilanContext)
 
 
-    return <div className="content">
-        <Metrics />
-        <HistoryWrapper className="container box">
-            {items.map(item =>
-                <ListIem key={item.description} color={categoryMapping[item.category].color}>
-                    - {item.value}: {item.description}
-                </ListIem>
-            )}
-        </HistoryWrapper>
-    </div>
+    return <HistoryWrapper className="box">
+        {items.map(item =>
+            <ListIem key={item.description} color={categoryMapping[item.category].color}>
+                - {item.value}: {item.description}
+            </ListIem>
+        )}
+    </HistoryWrapper>
 }

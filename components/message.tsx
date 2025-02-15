@@ -5,7 +5,7 @@ export interface Message {
     txt: string
 }
 
-export const Message = forwardRef<HTMLDivElement, Message>(({ bot, txt }, ref) => {
+export const Message = forwardRef<HTMLDivElement, Message>(function MessageEl({ bot, txt }, ref) {
     return <div className={`message ${bot ? "is-primary" : "is-info"}`} ref={ref}>
         {/* <div className="message-header">
             {bot ? "FestiCarbon" : "You"}
