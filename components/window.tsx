@@ -84,8 +84,15 @@ export const Window = () => {
                 case "message":
                     dispatch({ type: "ai_message", content: msg.content })
                     break;
-                case "update_bilan":
-                    changeBilan(msg.content)
+                case "update":
+
+                    const bilan = msg.content.map((item: [number, string, number]) => ({
+                        category: item[0],
+                        description: item[1],
+                        value: item[2]
+                    }))
+
+                    changeBilan(bilan)
                     break;
                 default:
                     break;
