@@ -77,6 +77,10 @@ export const Window = () => {
     const { lastMessage, sendMessage } = useWebSocket(wsUrl)
 
     useEffect(() => {
+        sendMessage("Hi !")
+    }, [sendMessage])
+
+    useEffect(() => {
         if (lastMessage !== null) {
             const msg = JSON.parse(lastMessage.data)
 
