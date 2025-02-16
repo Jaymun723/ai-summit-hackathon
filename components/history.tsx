@@ -17,11 +17,11 @@ export const BilanContext = createContext({ items: [], changeBilan: () => { } } 
 
 export const BilanWrapper = (props: { children: React.ReactNode }) => {
     const [items, setItems] = useState([
-        { category: 0, description: "Les lumières ont une consommation de 500kW/h et fonctionnent pendant 6h.", value: 6 * 500 * 1.3 },
-        { category: 1, description: "Yas", value: 700 },
-        { category: 1, description: "No", value: 5000 },
-        { category: 4, description: "Oupsi", value: 1200 },
-        { category: 3, description: "srdgfyrdfstcjesnvbgrdjemxnen,rhcvnksdghjkghjgnjmh", value: 1200 }
+        // { category: 0, description: "Les lumières ont une consommation de 500kW/h et fonctionnent pendant 6h.", value: 6 * 500 * 1.3 },
+        // { category: 1, description: "Yas", value: 700 },
+        // { category: 1, description: "No", value: 5000 },
+        // { category: 4, description: "Oupsi", value: 1200 },
+        // { category: 3, description: "srdgfyrdfstcjesnvbgrdjemxnen,rhcvnksdghjkghjgnjmh", value: 1200 }
     ] as BilanItem[])
 
     return <BilanContext.Provider value={{ items, changeBilan: setItems }}>

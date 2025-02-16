@@ -91,7 +91,7 @@ export const Window = () => {
                     break;
             }
         }
-    }, [lastMessage])
+    }, [changeBilan, lastMessage])
 
     return <>
         <ChatBox className="box">
