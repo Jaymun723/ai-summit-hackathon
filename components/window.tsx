@@ -2,8 +2,11 @@ import { act, useContext, useEffect, useMemo, useReducer, useRef, useState } fro
 import { Message } from "./message"
 import { Input } from "./input"
 import styled from "styled-components"
-import { WebSocketHandler } from "./ws"
+import { getWsUrl } from "./ws"
 import { BilanContext, BilanItem } from "./history"
+import useWebSocket from "react-use-websocket"
+
+
 
 
 const initialMessages: Message[] = [
@@ -40,10 +43,7 @@ const reducer = (state: State, action: { type: string, content: string }): State
 }
 
 export const Window = () => {
-    // const [messages, setMessages] = useState(initialMessages)
-
     const { changeBilan } = useContext(BilanContext)
-
 
     const [state, dispatch] = useReducer(reducer, { answering: false, error: "", messages: [] })
 
@@ -56,17 +56,42 @@ export const Window = () => {
         }
     }, [state.messages, changeBilan]);
 
-    const wsHandler = useMemo(() => new WebSocketHandler(
-        (answer) => dispatch({ type: "ai_message", content: answer }),
-        (err) => dispatch({ type: "error", content: err }),
-        (bilan) => changeBilan(bilan)),
-        [changeBilan])
+
+    const [wsUrl, setWsUrl] = useState(getWsUrl())
+
+    const changeWsUrl = (e: KeyboardEvent) => {
+        if (e.key === "F1") {
+            setWsUrl((wsUrl) => prompt("Ws url ?", wsUrl) || wsUrl)
+        }
+    }
 
     useEffect(() => {
+        window.addEventListener("keydown", changeWsUrl)
+
         return () => {
-            wsHandler.destory()
+            window.removeEventListener("keydown", changeWsUrl)
         }
     })
+
+
+    const { lastMessage, sendMessage } = useWebSocket(wsUrl)
+
+    useEffect(() => {
+        if (lastMessage !== null) {
+            const msg = JSON.parse(lastMessage.data)
+
+            switch (msg.type) {
+                case "message":
+                    dispatch({ type: "ai_message", content: msg.content })
+                    break;
+                case "update_bilan":
+                    changeBilan(msg.content)
+                    break;
+                default:
+                    break;
+            }
+        }
+    }, [lastMessage])
 
     return <>
         <ChatBox className="box">
@@ -86,7 +111,8 @@ export const Window = () => {
         <Input onMessage={(txt) => {
             // setMessages(messages.concat([{ txt }]))
             dispatch({ type: "user_message", content: txt })
-            wsHandler.ask(txt)
+            // wsHandler.current?.ask(txt)
+            sendMessage(txt)
         }} />
     </>
 }
